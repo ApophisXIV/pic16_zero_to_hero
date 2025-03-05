@@ -27,8 +27,8 @@ typedef enum {
 } lcd_cmd_t;
 
 typedef enum {
-    LCD_POWER_OFF = (0 << DB0),
-    LCD_POWER_ON  = (1 << DB0),
+    LCD_POWER_OFF = (0 << DB2),
+    LCD_POWER_ON  = (1 << DB2),
 } lcd_power_t;
 
 typedef enum {
@@ -67,44 +67,49 @@ static void lcd_write_nibble(lcd_init_t *lcd, uint8_t data) {
     gpio_write_pin(lcd->gpio.EN->port, lcd->gpio.EN->pin, GPIO_LOW);
 
     // Envio los 4 bits mas significativos
-    for (uint8_t i = 0; i < 4; i++) {
-        gpio_write_pin(lcd->gpio.DB[i + DB4]->port, lcd->gpio.DB[i + DB4]->pin, (data >> i) & 0x01);
+    for (uint8_t i = DB4; i <= DB7; i++) {
+        gpio_write_pin(lcd->gpio.DB[i]->port, lcd->gpio.DB[i]->pin, (data >> i) & 0x01);
     }
 
     gpio_write_pin(lcd->gpio.EN->port, lcd->gpio.EN->pin, GPIO_HIGH);
-    __delay_us(3);
+    __delay_us(1);
+    // __delay_ms(20);
     gpio_write_pin(lcd->gpio.EN->port, lcd->gpio.EN->pin, GPIO_LOW);
+    // __delay_us(5);
+    // __delay_ms(20);
 }
 
 static void lcd_cmd_write(lcd_init_t *lcd, uint8_t cmd) {
     gpio_write_pin(lcd->gpio.RS->port, lcd->gpio.RS->pin, GPIO_LOW);
-    lcd_write_nibble(lcd, cmd >> 4);
-    lcd_write_nibble(lcd, cmd & 0x0F);
+    lcd_write_nibble(lcd, cmd);
+    lcd_write_nibble(lcd, cmd << 4);
 }
 
 static void lcd_data_write(lcd_init_t *lcd, uint8_t data) {
     gpio_write_pin(lcd->gpio.RS->port, lcd->gpio.RS->pin, GPIO_HIGH);
-    lcd_write_nibble(lcd, data >> 4);
-    lcd_write_nibble(lcd, data & 0x0F);
+    lcd_write_nibble(lcd, data);
+    lcd_write_nibble(lcd, data << 4);
 }
 
 static void lcd_start_sequence(lcd_init_t *lcd) {
 
     // LCD Start-up
-    __delay_ms(20);    // Wait for PSU stabilization
+    __delay_ms(50);    // Wait for PSU stabilization
     lcd_write_nibble(lcd, LCD_CMD_FUNCTION_SET | LCD_8_BIT_MODE);
     __delay_ms(5);
     lcd_write_nibble(lcd, LCD_CMD_FUNCTION_SET | LCD_8_BIT_MODE);
     __delay_us(150);
     lcd_write_nibble(lcd, LCD_CMD_FUNCTION_SET | LCD_8_BIT_MODE);
-
+    
     lcd_write_nibble(lcd, (uint8_t)(LCD_CMD_FUNCTION_SET | lcd->bus_size));    // TODO: Revisar en caso de 8bits porque no se si es necesario
+    
     lcd_cmd_write(lcd, (uint8_t)(LCD_CMD_FUNCTION_SET | lcd->bus_size | lcd->n_lines | lcd->display_font));
     lcd_cmd_write(lcd, LCD_CMD_DISPLAY_CTRL | LCD_POWER_OFF);
     lcd_cmd_write(lcd, LCD_CMD_CLEAR_DISPLAY);
+    __delay_ms(3);
     lcd_cmd_write(lcd, LCD_CMD_ENTRY_MODE_SET | LCD_CURSOR_MOVE_RIGHT);
+    lcd_cmd_write(lcd, LCD_CMD_DISPLAY_CTRL | LCD_POWER_ON);
 }
-
 
 lcd_retval_t lcd_set_cursor(lcd_init_t *lcd, uint8_t x, uint8_t y) {
     if (x >= LCD_COLUMN_LIMIT || y >= LCD_ROW_LIMIT) return LCD_FAILURE;
@@ -135,7 +140,7 @@ lcd_retval_t lcd_config(lcd_init_t *lcd) {
     // https://panda-bg.com/resources/prod_2424_2134-091834-lcd-module-tc1602d-02wa0-16x2-stn.pdf
     lcd_start_sequence(lcd);
 
-    lcd_clear(lcd);
+    // lcd_clear(lcd);
 
     lcd_write_string(lcd, lcd->initial_msg);
 
