@@ -2,6 +2,7 @@
 #define GPIO_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
 typedef enum {
     GPIO_SUCCESS,
@@ -45,14 +46,12 @@ typedef struct {
 
 typedef void (*callback_t)(void);
 
-gpio_retval_t gpio_config(gpio_t *gpio, gpio_mode_t mode);
+gpio_retval_t gpio_config(gpio_port_t port, uint8_t pin, gpio_mode_t mode);
 
-gpio_retval_t gpio_write_pin(gpio_t *gpio, gpio_pin_t pin, gpio_pin_state_t state);
+gpio_retval_t gpio_write_pin(gpio_port_t port, uint8_t pin, gpio_pin_state_t state);
 
-bool gpio_read_pin(gpio_t *gpio, gpio_pin_t pin, gpio_retval_t *err_val);
+gpio_retval_t gpio_toggle_pin(gpio_port_t port, uint8_t pin);
 
-gpio_retval_t gpio_toggle_pin(gpio_t *gpio, gpio_pin_t pin);
-
-gpio_retval_t gpio_attach_interrupt(gpio_t *gpio, gpio_pin_t pin, callback_t fn);
+bool gpio_read_pin(gpio_port_t port, uint8_t pin, gpio_retval_t *err_val);
 
 #endif    // GPIO_H

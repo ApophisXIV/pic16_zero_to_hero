@@ -18,19 +18,20 @@
 
 int main() {
 
-    // clk_use_internal(F_8MHZ);
     clk_use_external();
 
-    gpio_t leds = {
-        .port = GPIO_PORTC,
-        .pin  = GPIO_3 | GPIO_4,
-    };
+    gpio_config(GPIO_PORTB, GPIO_5, GPIO_OUTPUT_HIGH);
+    gpio_config(GPIO_PORTB, GPIO_4, GPIO_OUTPUT_LOW);
+    gpio_config(GPIO_PORTB, GPIO_3, GPIO_OUTPUT_HIGH);
+    gpio_config(GPIO_PORTB, GPIO_2, GPIO_OUTPUT_LOW);
 
-    // gpio_config(&leds, GPIO_OUTPUT);
-    gpio_config(&leds, GPIO_OUTPUT_HIGH);
+    gpio_write_pin(GPIO_PORTB, GPIO_4, GPIO_HIGH);
+    gpio_write_pin(GPIO_PORTB, GPIO_3, GPIO_LOW);
 
     while (1) {
-        gpio_toggle_pin(&leds, LED_ROJO_1 | LED_ROJO_2);
+        gpio_write_pin(GPIO_PORTB, GPIO_4, !gpio_read_pin(GPIO_PORTB, GPIO_4, NULL));
+        __delay_ms(500);
+        gpio_write_pin(GPIO_PORTB, GPIO_4, !gpio_read_pin(GPIO_PORTB, GPIO_4, NULL));
         __delay_ms(500);
     }
 
