@@ -5,7 +5,7 @@
             "name": "default",
             "id": "conf1",
             "targetDevice": "PIC16F886",
-            "imagePath": "./out/00_clock_blink/default.elf",
+            "imagePath": "./out/03_driver_adc/default.elf",
             "packs": [
                 {
                     "name": "PIC16Fxxx_DFP",
@@ -22,16 +22,7 @@
             "name": "default-XC8",
             "type": "toolchain",
             "provider": "microchip.toolchains:xc8@3.00",
-            "properties": {
-                "HI-TECH-LINK.format-hex-file-for-download": true
-            }
-        },
-        {
-            "name": "-tool-base",
-            "type": "tool",
-            "properties": {
-                "oscillator.frequency": "1"
-            }
+            "properties": {}
         }
     ],
     "fileSets": [
@@ -39,7 +30,7 @@
             "name": "default",
             "files": [
                 {
-                    "include": "**/00_clock_and_blink/**",
+                    "include": "**/03_driver_adc/**",
                     "exclude": "**/(_build|out|cmake|.vscode)/**/*"
                 }
             ]
