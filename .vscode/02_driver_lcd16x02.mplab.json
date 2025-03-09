@@ -31,7 +31,7 @@
             "files": [
                 {
                     "include": "**/02_driver_lcd16x02/**",
-                    "exclude": "**/(_build|out|cmake|.vscode)/**/*"
+                    "exclude": "**/(_build|out|cmake|Tests|.vscode)/**/*"
                 }
             ]
         }
