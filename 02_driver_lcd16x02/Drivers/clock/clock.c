@@ -1,16 +1,6 @@
 #include "clock.h"
 #include <xc.h>
 
-// TODO: Opaque pointer to clock_t struct
-// struct _clock {
-//     bool is_intosc;
-//     uint16_t freq;
-// };
-
-// clk_status_t clk_is_running(clock_t *clk) {
-//     return clk->is_intosc;
-// }
-
 void clk_use_internal(intosc_freq_t freq) {
 
     OSCCONbits.SCS  = 1;                      // Set the system clock to internal

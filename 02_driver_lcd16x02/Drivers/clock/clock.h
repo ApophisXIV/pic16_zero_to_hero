@@ -12,17 +12,6 @@ typedef enum {
     F_31KHZ  = 0b000,
 } intosc_freq_t;
 
-// TODO: Add a clock_status_t enum to indicate the clock source and monitor protections
-// typedef enum {
-//     CLK_IS_RUNNING_INTOSC,
-//     CLK_IS_RUNNING_EXTOSC,
-//     CLK_FAILSAFE_TRIGGERED,
-// } clk_status_t;
-
-// TODO: Opaque pointer to clock_t struct
-// struct _clock;
-// typedef struct _clock clock_t;
-
 /**
  * @brief Configure the clock system to use the internal clock
  * @param  freq: The freq. values are bounded by intosc_freq_t enum

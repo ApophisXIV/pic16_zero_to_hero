@@ -60,12 +60,12 @@ typedef struct {
 } lcd_gpio_t;
 
 typedef struct {
-    lcd_gpio_t       gpio;
-    lcd_bus_mode_t   bus_size;
-    lcd_font_t       display_font;
-    lcd_lines_t      n_lines;
-    lcd_cursor_t     display_cursor;
-    char            *initial_msg;
+    lcd_gpio_t     gpio;
+    lcd_bus_mode_t bus_size;
+    lcd_font_t     display_font;
+    lcd_lines_t    n_lines;
+    lcd_cursor_t   display_cursor;
+    char          *initial_msg;
 } lcd_init_t;
 
 /**
@@ -188,44 +188,3 @@ void lcd_turn_off_cursor_blink(lcd_init_t *lcd);
 void lcd_turn_on_cursor_blink(lcd_init_t *lcd);
 
 #endif    // LCD_H
-
-// // lcd.h
-// #ifndef LCD_H
-// #define LCD_H
-
-// #include "../gpio/gpio.h"
-// #include <stdint.h>
-
-// // Estructura para definir un pin con puerto y número de pin
-// typedef struct {
-//     gpio_port_t port;    // Puntero al puerto (abstracto para hacerlo agnóstico)
-//     gpio_pin_t  pin;     // Número de pin en el puerto
-// } lcd_gpio_pin_t;
-
-// // Estructura de configuración del LCD
-// typedef struct {
-//     lcd_gpio_pin_t rs;
-//     lcd_gpio_pin_t en;
-//     lcd_gpio_pin_t d4;
-//     lcd_gpio_pin_t d5;
-//     lcd_gpio_pin_t d6;
-//     lcd_gpio_pin_t d7;
-// } lcd_pins_t;
-
-// // Estructura principal del LCD
-// typedef struct {
-//     lcd_pins_t pins;
-//     uint8_t    display_on;
-//     uint8_t    cursor_on;
-//     uint8_t    blink_on;
-// } lcd_t;
-
-// // Prototipos de funciones
-// void lcd_init(lcd_t *lcd);
-// void lcd_cmd(lcd_t *lcd, uint8_t cmd);
-// void lcd_write_char(lcd_t *lcd, char c);
-// void lcd_write_string(lcd_t *lcd, const char *str);
-// void lcd_clear(lcd_t *lcd);
-// void lcd_set_cursor(lcd_t *lcd, uint8_t x, uint8_t y);
-
-// #endif    // LCD_H
