@@ -25,7 +25,7 @@ typedef enum {
 typedef enum {
     LCD_4_BIT_MODE = (0 << DB4),
     LCD_8_BIT_MODE = (1 << DB4),
-} lcd_bus_mode_t;
+} lcd_mode_t;
 
 typedef enum {
     LCD_5x8_FONT  = (0 << DB2),
@@ -60,12 +60,12 @@ typedef struct {
 } lcd_gpio_t;
 
 typedef struct {
-    lcd_gpio_t     gpio;
-    lcd_bus_mode_t bus_size;
-    lcd_font_t     display_font;
-    lcd_lines_t    n_lines;
-    lcd_cursor_t   display_cursor;
-    char          *initial_msg;
+    lcd_gpio_t   gpio;
+    lcd_mode_t   bus_size;
+    lcd_font_t   display_font;
+    lcd_lines_t  n_lines;
+    lcd_cursor_t display_cursor;
+    char        *initial_msg;
 } lcd_init_t;
 
 /**

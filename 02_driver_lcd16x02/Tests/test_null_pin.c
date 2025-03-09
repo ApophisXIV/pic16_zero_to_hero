@@ -70,7 +70,7 @@ typedef enum {
 typedef enum {
     LCD_4_BIT_MODE = (0 << DB4),
     LCD_8_BIT_MODE = (1 << DB4),
-} lcd_bus_mode_t;
+} lcd_mode_t;
 
 typedef enum {
     LCD_5x8_FONT  = (0 << DB2),
@@ -105,19 +105,19 @@ typedef struct {
 } lcd_gpio_t;
 
 typedef struct {
-    lcd_gpio_t     gpio;
-    lcd_bus_mode_t bus_size;
-    lcd_font_t     display_font;
-    lcd_lines_t    n_lines;
-    lcd_cursor_t   display_cursor;
-    char          *initial_msg;
+    lcd_gpio_t   gpio;
+    lcd_mode_t   bus_size;
+    lcd_font_t   display_font;
+    lcd_lines_t  n_lines;
+    lcd_cursor_t display_cursor;
+    char        *initial_msg;
 } lcd_init_t;
 
 /* ---------------------------------- lcd.c --------------------------------- */
-static lcd_retval_t lcd_gpio_config(lcd_gpio_t *gpio, lcd_bus_mode_t bus_size) {
+static lcd_retval_t lcd_gpio_config(lcd_gpio_t *gpio, lcd_mode_t bus_size) {
 
     int a = 0;
-    if(bus_size) a = 1;
+    if (bus_size) a = 1;
 
     if (gpio_config(gpio->EN->port, gpio->EN->pin, GPIO_OUTPUT_LOW) == GPIO_FAILURE) return LCD_EN_PIN_ERROR;
     if (gpio_config(gpio->RS->port, gpio->RS->pin, GPIO_OUTPUT_LOW) == GPIO_FAILURE) return LCD_RS_PIN_ERROR;
@@ -127,7 +127,7 @@ static lcd_retval_t lcd_gpio_config(lcd_gpio_t *gpio, lcd_bus_mode_t bus_size) {
 
     for (uint8_t i = 0; i < 8; i++) {
         if (gpio->DB[i] != NULL)
-            if (gpio_config(gpio->DB[i+a]->port, gpio->DB[i]->pin, GPIO_OUTPUT_LOW) == GPIO_FAILURE) return LCD_DB_PIN_ERROR;
+            if (gpio_config(gpio->DB[i + a]->port, gpio->DB[i]->pin, GPIO_OUTPUT_LOW) == GPIO_FAILURE) return LCD_DB_PIN_ERROR;
     }
 
     return LCD_SUCCESS;

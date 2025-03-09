@@ -38,7 +38,7 @@ typedef enum {
     LCD_DISPLAY_MOVE_RIGHT = (0 << DB1 | 1 << DB0),
 } lcd_action_movement_t;
 
-static lcd_retval_t lcd_gpio_config(lcd_gpio_t *gpio, lcd_bus_mode_t bus_size) {
+static lcd_retval_t lcd_gpio_config(lcd_gpio_t *gpio, lcd_mode_t bus_size) {
 
     if (gpio == NULL || gpio->EN == NULL || gpio->RS == NULL) return LCD_FAILURE;
 
