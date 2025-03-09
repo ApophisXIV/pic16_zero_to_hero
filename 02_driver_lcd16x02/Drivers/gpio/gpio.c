@@ -6,7 +6,7 @@ static volatile uint8_t *tris_reg[] = {(uint8_t *)(&TRISA), (uint8_t *)(&TRISB),
 
 static uint8_t port_status[] = {[GPIO_PORTA] = 0, [GPIO_PORTB] = 0, [GPIO_PORTC] = 0};
 
-gpio_retval_t gpio_config(gpio_port_t port, uint8_t pin, gpio_mode_t mode) {
+gpio_retval_t gpio_config(gpio_port_t port, gpio_pin_t pin, gpio_mode_t mode) {
 
     if (port > GPIO_PORTC) return GPIO_FAILURE;
 
@@ -25,7 +25,7 @@ gpio_retval_t gpio_config(gpio_port_t port, uint8_t pin, gpio_mode_t mode) {
     return GPIO_SUCCESS;
 }
 
-gpio_retval_t gpio_write_pin(gpio_port_t port, uint8_t pin, gpio_pin_state_t state) {
+gpio_retval_t gpio_write_pin(gpio_port_t port, gpio_pin_t pin, gpio_pin_state_t state) {
 
     if (state == GPIO_HIGH)
         port_status[port] |= pin;
@@ -37,12 +37,12 @@ gpio_retval_t gpio_write_pin(gpio_port_t port, uint8_t pin, gpio_pin_state_t sta
     return GPIO_SUCCESS;
 }
 
-gpio_retval_t gpio_toggle_pin(gpio_port_t port, uint8_t pin) {
+gpio_retval_t gpio_toggle_pin(gpio_port_t port, gpio_pin_t pin) {
     port_status[port] ^= pin;
     *port_reg[port] = port_status[port];
     return GPIO_SUCCESS;
 }
 
-bool gpio_read_pin(gpio_port_t port, uint8_t pin, gpio_retval_t *err_val) {
+bool gpio_read_pin(gpio_port_t port, gpio_pin_t pin, gpio_retval_t *err_val) {
     return *port_reg[port] & pin;
 }
