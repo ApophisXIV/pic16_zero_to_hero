@@ -84,7 +84,7 @@ static void lcd_cmd_write_init(lcd_init_t *lcd, uint8_t cmd) {
         lcd_gpio_write(lcd, cmd);
 }
 
-static void lcd_cmd_write(lcd_init_t *lcd, uint8_t cmd) {
+static void lcd_write(lcd_init_t *lcd, uint8_t cmd) {
     gpio_write_pin(lcd->gpio.RS->port, lcd->gpio.RS->pin, GPIO_LOW);
     if (lcd->bus_size == LCD_4_BIT_MODE)
         lcd_gpio_write(lcd, cmd >> 4);
@@ -111,18 +111,18 @@ static void lcd_start_sequence(lcd_init_t *lcd) {
     if (lcd->bus_size == LCD_4_BIT_MODE)
         lcd_cmd_write_init(lcd, (uint8_t)(LCD_CMD_FUNCTION_SET | lcd->bus_size));
 
-    lcd_cmd_write(lcd, (uint8_t)(LCD_CMD_FUNCTION_SET | lcd->bus_size | lcd->n_lines | lcd->display_font));
-    lcd_cmd_write(lcd, LCD_CMD_DISPLAY_CTRL | LCD_POWER_OFF);
-    lcd_cmd_write(lcd, LCD_CMD_CLEAR_DISPLAY);
+    lcd_write(lcd, (uint8_t)(LCD_CMD_FUNCTION_SET | lcd->bus_size | lcd->n_lines | lcd->display_font));
+    lcd_write(lcd, LCD_CMD_DISPLAY_CTRL | LCD_POWER_OFF);
+    lcd_write(lcd, LCD_CMD_CLEAR_DISPLAY);
     __delay_ms(3);
-    lcd_cmd_write(lcd, LCD_CMD_ENTRY_MODE_SET | LCD_CURSOR_MOVE_RIGHT);
-    lcd_cmd_write(lcd, LCD_CMD_DISPLAY_CTRL | LCD_POWER_ON);
+    lcd_write(lcd, LCD_CMD_ENTRY_MODE_SET | LCD_CURSOR_MOVE_RIGHT);
+    lcd_write(lcd, LCD_CMD_DISPLAY_CTRL | LCD_POWER_ON);
 }
 
 lcd_retval_t lcd_set_cursor(lcd_init_t *lcd, uint8_t x, uint8_t y) {
     if (x >= LCD_COLUMN_LIMIT || y >= LCD_ROW_LIMIT) return LCD_FAILURE;
 
-    lcd_cmd_write(lcd, LCD_CMD_SET_DDRAM_ADDRESS | ((y == 0 ? LCD_DDRAM_ADDRESS_ROW_0 : LCD_DDRAM_ADDRESS_ROW_1) + x));
+    lcd_write(lcd, LCD_CMD_SET_DDRAM_ADDRESS | ((y == 0 ? LCD_DDRAM_ADDRESS_ROW_0 : LCD_DDRAM_ADDRESS_ROW_1) + x));
 
     return LCD_SUCCESS;
 }
@@ -153,6 +153,6 @@ lcd_retval_t lcd_config(lcd_init_t *lcd) {
 }
 
 void lcd_clear(lcd_init_t *lcd) {
-    lcd_cmd_write(lcd, LCD_CMD_CLEAR_DISPLAY);
+    lcd_write(lcd, LCD_CMD_CLEAR_DISPLAY);
     __delay_ms(3);
 }
